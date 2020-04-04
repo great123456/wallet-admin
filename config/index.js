@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api':{
-          target:'https://walletapi.hxgtech.com/api',
+          target:'http://47.100.9.215:8088/api',
           changeOrigin:true,
           pathRewrite:{
               '/api':''

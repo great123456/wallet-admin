@@ -219,9 +219,9 @@
                     this.bank.push(detail.bank_card)
                 }
                 if(detail.id_card){
-                   detail.id_card.front = 'https://walletapi.hxgtech.com'+detail.id_card.front
-                   detail.id_card.back = 'https://walletapi.hxgtech.com'+detail.id_card.back
-                   detail.id_card.people = 'https://walletapi.hxgtech.com'+detail.id_card.people
+                   detail.id_card.front = 'http://47.100.9.215:8088'+detail.id_card.front
+                   detail.id_card.back = 'http://47.100.9.215:8088'+detail.id_card.back
+                   detail.id_card.people = 'http://47.100.9.215:8088'+detail.id_card.people
                    this.card.push(detail.id_card)
                 }
                 if(detail.mobile_carrier){

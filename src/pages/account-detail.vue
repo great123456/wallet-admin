@@ -152,20 +152,20 @@
                 if(detail.bank_card){
                   this.bank.push(detail.bank_card)
                 }
-                if(detail.call_record.length){
+                if(detail.call_record && detail.call_record.length){
                   this.recordList = detail.call_record
                 }
                 if(detail.ali_pay){
-                  this.ali_pay.push(detail.ali_pay)
+                  this.ali_pay.push(detail.ali_pay[0])
                 }
                 if(detail.id_card){
-                  detail.id_card.front = 'https://walletapi.hxgtech.com'+detail.id_card.front
-                  detail.id_card.back = 'https://walletapi.hxgtech.com'+detail.id_card.back
-                  detail.id_card.people = 'https://walletapi.hxgtech.com'+detail.id_card.people
+                  detail.id_card.front = 'http://47.100.9.215:8088'+detail.id_card.front
+                  detail.id_card.back = 'http://47.100.9.215:8088'+detail.id_card.back
+                  detail.id_card.people = 'http://47.100.9.215:8088'+detail.id_card.people
                   this.card.push(detail.id_card)
                 }
                 if(detail.mobile_carrier){
-                  this.mobile.push(detail.mobile_carrier)
+                  this.mobile.push(detail.mobile_carrier[0])
                 }
                 if(detail.phone_list){
                   this.contacts = detail.phone_list
