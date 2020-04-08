@@ -74,7 +74,7 @@
             <el-table :data="recordList" border style="width: 100%">
                 <el-table-column prop="time" label="通话时间" sortable></el-table-column>
                 <el-table-column prop="name" label="通话人"></el-table-column>
-                <el-table-column prop="phone" label="通话电话"></el-table-column>
+                <el-table-column prop="number" label="通话电话"></el-table-column>
                 <el-table-column prop="type" label="通话类型"></el-table-column>
             </el-table>
             <el-button class="editor-btn" type="primary" @click="returnPage">返回</el-button>
@@ -130,48 +130,52 @@
                 customer_id: this.id
               })
               .then((res)=>{
-                console.log('detail',res)
-                let detail = res.data
-                let basic = {
-                  name: detail.name?detail.name:detail.phone,
-                  phone: detail.phone,
-                  created_at: detail.created_at,
-                  is_auth: detail.is_auth,
-                  agent: detail.agent
-                }
-                if(basic.is_auth == 0){
-                  basic.is_auth = '未认证'
-                }
-                if(basic.is_auth == 1){
-                  basic.is_auth = '已认证'
-                }
-                if(basic.is_auth == 2){
-                  basic.is_auth = '审核不通过'
-                }
-                this.basic.push(basic)
-                if(detail.bank_card){
-                  this.bank.push(detail.bank_card)
-                }
-                if(detail.call_record && detail.call_record.length){
-                  this.recordList = detail.call_record
-                }
-                if(detail.ali_pay){
-                  this.ali_pay.push(detail.ali_pay[0])
-                }
-                if(detail.id_card){
-                  detail.id_card.front = 'http://47.100.9.215:8088'+detail.id_card.front
-                  detail.id_card.back = 'http://47.100.9.215:8088'+detail.id_card.back
-                  detail.id_card.people = 'http://47.100.9.215:8088'+detail.id_card.people
-                  this.card.push(detail.id_card)
-                }
-                if(detail.mobile_carrier){
-                  this.mobile.push(detail.mobile_carrier[0])
-                }
-                if(detail.phone_list){
-                  this.contacts = detail.phone_list
-                }
-                if(detail.examine){
-                    this.examine.push(detail.examine)
+                if(res.code == 200) {
+                   console.log('detail',res)
+                   let detail = res.data
+                   let basic = {
+                     name: detail.name?detail.name:detail.phone,
+                     phone: detail.phone,
+                     created_at: detail.created_at,
+                     is_auth: detail.is_auth,
+                     agent: detail.agent
+                   }
+                   if(basic.is_auth == 0){
+                     basic.is_auth = '未认证'
+                   }
+                   if(basic.is_auth == 1){
+                     basic.is_auth = '已认证'
+                   }
+                   if(basic.is_auth == 2){
+                     basic.is_auth = '审核不通过'
+                   }
+                   this.basic.push(basic)
+                   if(detail.bank_card){
+                     this.bank.push(detail.bank_card[0])
+                   }
+                   if(detail.ali_pay){
+                     this.ali_pay.push(detail.ali_pay[0])
+                   }
+                   if(detail.id_card){
+                     // detail.id_card.front = detail.id_card[0].front
+                     // detail.id_card.back = detail.id_card[0].back
+                     // detail.id_card.people = detail.id_card[0].people
+                     this.card = detail.id_card
+                   }
+                   if(detail.mobile_carrier){
+                     // this.mobile.push(detail.mobile_carrier[0])
+                     this.mobile = detail.mobile_carrier
+                   }
+                   if(detail.examine){
+                     this.examine.push(detail.examine)
+                   }
+                   if(detail.phone_list){
+                     this.contacts = JSON.parse(detail.phone_list)
+                   }
+                   if(detail.call_record && detail.call_record.length){
+                     this.recordList = JSON.parse(detail.call_record)
+                     console.log('recordList', this.recordList)
+                   }
                 }
               })
             }

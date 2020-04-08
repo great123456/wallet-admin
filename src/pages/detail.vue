@@ -192,66 +192,68 @@
                 customer_id: this.id
               })
               .then((res)=>{
-                console.log('detail',res)
-                let detail = res.data
-                if(detail.is_auth == 0){
-                  detail.is_auth = '未认证'
-                }
-                if(detail.is_auth == 1){
-                  detail.is_auth = '已认证'
-                }
-                if(detail.is_auth == 2){
-                  detail.is_auth = '审核不通过'
-                }
-                let basic = {
-                  name: detail.name?detail.name:detail.phone,
-                  phone: detail.phone,
-                  id_card: detail.bank_card.id_card,
-                  created_at: detail.created_at,
-                  is_auth: detail.is_auth
-                }
-                this.basic.push(basic)
-                console.log('basic',this.basic)
-                if(detail.ali_pay){
-                  this.ali_pay.push(detail.ali_pay)
-                }
-                if(detail.bank_card){
-                    this.bank.push(detail.bank_card)
-                }
-                if(detail.id_card){
-                   detail.id_card.front = 'http://47.100.9.215:8088'+detail.id_card.front
-                   detail.id_card.back = 'http://47.100.9.215:8088'+detail.id_card.back
-                   detail.id_card.people = 'http://47.100.9.215:8088'+detail.id_card.people
-                   this.card.push(detail.id_card)
-                }
-                if(detail.mobile_carrier){
-                    this.mobile.push(detail.mobile_carrier)
-                }
-                this.contacts = detail.phone_list
-                if(detail.examine){
-                    this.examine.push(detail.examine)
-                }
-                if(detail.loans){
-                   detail.loans.forEach(function(item){
-                      switch (item.status) {
-                          case 0:
-                              item.state = '待审核';
-                              break;
-                          case 1:
-                              item.state = '审核通过待放款';
-                              break;
-                          case 2:
-                              item.state = '审核不通过';
-                              break;
-                          case 3:
-                              item.state = '已放款';
-                              break;
-                          default:
-                              item.state = '已还款';
-                              break;
-                      }
-                    })
-                   this.approve = detail.loans
+                if(res.code == 200) {
+                   console.log('detail',res)
+                   let detail = res.data
+                   if(detail.is_auth == 0){
+                     detail.is_auth = '未认证'
+                   }
+                   if(detail.is_auth == 1){
+                     detail.is_auth = '已认证'
+                   }
+                   if(detail.is_auth == 2){
+                     detail.is_auth = '审核不通过'
+                   }
+                   let basic = {
+                     name: detail.name?detail.name:detail.phone,
+                     phone: detail.phone,
+                     id_card: detail.bank_card.id_card,
+                     created_at: detail.created_at,
+                     is_auth: detail.is_auth
+                   }
+                   this.basic.push(basic)
+                   if(detail.ali_pay){
+                     this.ali_pay.push(detail.ali_pay)
+                   }
+                   if(detail.bank_card){
+                      this.bank.push(detail.bank_card[0])
+                   }
+                   if(detail.id_card){
+                      // detail.id_card.front = detail.id_card[0].front
+                      // detail.id_card.back = detail.id_card[0].back
+                      // detail.id_card.people = detail.id_card[0].people
+                      this.card = detail.id_card
+                   }
+                   console.log('card', this.card)
+                   if(detail.mobile_carrier){
+                      this.mobile = detail.mobile_carrier
+                   }
+                   if(detail.examine){
+                     this.examine.push(detail.examine)
+                   }
+                   if(detail.loans){
+                      detail.loans.forEach(function(item){
+                         switch (item.status) {
+                             case 0:
+                                 item.state = '待审核';
+                                 break;
+                             case 1:
+                                 item.state = '审核通过待放款';
+                                 break;
+                             case 2:
+                                 item.state = '审核不通过';
+                                 break;
+                             case 3:
+                                 item.state = '已放款';
+                                 break;
+                             default:
+                                 item.state = '已还款';
+                                 break;
+                         }
+                       })
+                      this.approve = detail.loans
+                   }
+                   this.contacts = JSON.parse(detail.phone_list)
                 }
               })
             }
